@@ -92,7 +92,7 @@ export default {
 }
 .el-main {
   background-color: #f2f3f8;
-  min-height: 666px;
+  height: 666px;
   overflow-y: auto;
 }
 .auther_img {

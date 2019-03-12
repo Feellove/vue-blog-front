@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import home from '@/components/common/home'
 import article from '@/components/compontent/article'
 import articledetail from '@/components/compontent/articledetail'
+import info from '@/components/compontent/info'
 
 Vue.use(Router)
 export default new Router({
@@ -27,8 +28,8 @@ export default new Router({
     redirect: 'auther',
     children: [{
       path: '/auther',
-      name: 'auther',
-      component: article,
+      name: 'info',
+      component: info,
     }]
   }]
 })
