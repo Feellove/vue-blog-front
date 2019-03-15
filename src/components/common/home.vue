@@ -1,38 +1,13 @@
 <template>
   <el-container>
     <el-header>
-      <el-row
-        type="flex"
-        class="row-bg"
-        justify="center"
-      >
-        <el-col
-          :xs="7"
-          :sm="7"
-          :md="7"
-          :lg="7"
-          :xl="7"
-          justify="center"
-        >
-          <a
-            class="page__logo"
-            href="/"
-            title="2019网"
-            alt="2019网"
-          >
-            <img
-              src="http://img2.2019w.cn/Rieko_logoW.png"
-              alt="2019网"
-            >
+      <el-row type="flex" class="row-bg" justify="center">
+        <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7" justify="center">
+          <a class="page__logo" href="/" title="2019网" alt="2019网">
+            <img src="http://img2.2019w.cn/Rieko_logoW.png" alt="2019网">
           </a>
         </el-col>
-        <el-col
-          :xs="10"
-          :sm="10"
-          :md="10"
-          :lg="10"
-          :xl="10"
-        >
+        <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">
           <el-menu
             default-active="/article"
             background-color="#333"
@@ -52,19 +27,9 @@
             </el-menu-item>
           </el-menu>
         </el-col>
-        <el-col
-          :xs="7"
-          :sm="7"
-          :md="7"
-          :lg="7"
-          :xl="7"
-        >
+        <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
           <div>
-            <el-input
-              placeholder="请输入内容"
-              prefix-icon="el-icon-search"
-              v-model="input5"
-            ></el-input>
+            <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="input5"></el-input>
           </div>
         </el-col>
       </el-row>
@@ -72,46 +37,25 @@
     <div class="w-nav">
       <ul>
         <li>
-          <a
-            href="/categories/littleTalk/"
-            title=""
-          >微杂谈</a>
+          <a href="/categories/littleTalk/" title>微杂谈</a>
         </li>
         <li>
-          <a
-            href="/categories/story/"
-            title=""
-          >故事</a>
+          <a href="/categories/story/" title>故事</a>
         </li>
         <li>
-          <a
-            href="/categories/historicalCulture/"
-            title=""
-          >历史文化</a>
+          <a href="/categories/historicalCulture/" title>历史文化</a>
         </li>
         <li>
-          <a
-            href="/categories/movies/"
-            title=""
-          >影视</a>
+          <a href="/categories/movies/" title>影视</a>
         </li>
         <li>
-          <a
-            href="/categories/game/"
-            title=""
-          >游戏</a>
+          <a href="/categories/game/" title>游戏</a>
         </li>
         <li>
-          <a
-            href="/categories/technology/"
-            title=""
-          >技术</a>
+          <a href="/categories/technology/" title>技术</a>
         </li>
         <li class="lastLi">
-          <a
-            href="/categories/share/"
-            title=""
-          >分享</a>
+          <a href="/categories/share/" title>分享</a>
         </li>
       </ul>
     </div>
@@ -121,7 +65,9 @@
     <el-footer>
       <div class="page__container footer__container">
         <p class="footer__copyright">
-          <span style="color:#69747a">©Rieko © 2018 ,2019w All Rights Reserved.2019网 - 轻阅读 , 看见好时光 苏ICP备17044739号-2</span>
+          <span
+            style="color:#69747a"
+          >©Rieko © 2018 ,2019w All Rights Reserved.2019网 - 轻阅读 , 看见好时光 苏ICP备17044739号-2</span>
           <br>
           <span style="color:#69747a">
             本站服务器由
@@ -132,65 +78,44 @@
               title="南京厚知软件有限公司"
             >南京厚知软件有限公司</a> 提供。
           </span>
-          <span
-            id="busuanzi_container_site_pv"
-            style="color: rgb(105, 116, 122); display: inline;"
-          >
+          <span id="busuanzi_container_site_pv" style="color: rgb(105, 116, 122); display: inline;">
             本站总访问量
-            <span
-              style="color:#999;"
-              id="busuanzi_value_site_pv"
-            >13013</span> 次--
+            <span style="color:#999;" id="busuanzi_value_site_pv">13013</span> 次--
           </span>
-          <span
-            id="busuanzi_container_site_uv"
-            style="color: rgb(105, 116, 122); display: inline;"
-          >
+          <span id="busuanzi_container_site_uv" style="color: rgb(105, 116, 122); display: inline;">
             您是本站第
-            <span
-              style="color:#999;"
-              id="busuanzi_value_site_uv"
-            >4347</span> 个小伙伴
+            <span style="color:#999;" id="busuanzi_value_site_uv">4347</span> 个小伙伴
           </span>
         </p>
         <ul class="footer__social-network clearfix">
           <li class="social-network__item">
-            <a
-              href="https://github.com/showcc"
-              target="_blank"
-              title="github"
-            >
+            <a href="https://github.com/showcc" target="_blank" title="github">
               <i class="iconfont icon-github"></i>
             </a>
           </li>
 
           <li class="social-network__item">
-            <a
-              href="https://weibo.com/u/3941909649"
-              target="_blank"
-              title="新浪微博"
-            >
+            <a href="https://weibo.com/u/3941909649" target="_blank" title="新浪微博">
               <i class="iconfont icon-weibo"></i>
             </a>
           </li>
 
           <li class="social-network__item">
-            <a
-              href="https://www.zhihu.com/people/showccc/activities"
-              target="_blank"
-              title="知乎"
-            >
+            <a href="https://www.zhihu.com/people/showccc/activities" target="_blank" title="知乎">
               <i class="iconfont icon-zhihu"></i>
             </a>
           </li>
         </ul>
       </div>
     </el-footer>
+    <music></music>
   </el-container>
 </template>
 
 <script>
+import music from "@/components/common/music.vue";
 export default {
+  components: { music: music },
   data() {
     return {
       input5: ""
@@ -216,7 +141,7 @@ export default {
   left: 0;
   z-index: 99;
 }
-.el-card__body{
+.el-card__body {
   padding: 20px 0 20px 20px;
 }
 .el-carousel__container {
@@ -299,8 +224,8 @@ export default {
   border-radius: 22px;
   width: 250px;
 }
-.el-input__icon{
-  font-size: 20px
+.el-input__icon {
+  font-size: 20px;
 }
 .el-footer {
   display: block;
