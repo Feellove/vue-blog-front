@@ -31,7 +31,7 @@
             <div class="mini-article__cover">
               <img
                 itemprop="image"
-                src="http://img.2019w.cn/away1.jpg"
+                :src="article.articleImgurl"
                 alt="姑娘去远方"
               >
               <div
@@ -64,7 +64,7 @@
                 <p
                   itemprop="articleSection"
                   class="min-article__desc"
-                >姑娘擦去忧伤与彷徨，你的年华山高水长，穿上舞鞋，甩着肩膀，哼着你喜欢的曲子边唱边跳，去你想去的远方</p>
+                >{{article.articleDesc}}</p>
                 <p class="w-Read">
                   <span>阅读全文&gt;</span>
                 </p>
@@ -331,7 +331,7 @@ export default {
   overflow: hidden;
   padding: 10px 10px 0 10px;
   border-radius: 8px;
-  height: auto;
+  height: 160px;
 }
 .mini-article__cover:hover img {
   transform: scale(1.2);

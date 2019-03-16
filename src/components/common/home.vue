@@ -121,16 +121,16 @@
     <el-footer>
       <div class="page__container footer__container">
         <p class="footer__copyright">
-          <span style="color:#69747a">©Rieko © 2018 ,2019w All Rights Reserved.2019网 - 轻阅读 , 看见好时光 苏ICP备17044739号-2</span>
+          <span style="color:#69747a">Feelman</span>
           <br>
           <span style="color:#69747a">
             本站服务器由
             <a
               style="color:#999;"
               target="_blank"
-              href="https://www.houzhi.net.cn/#!/main/index"
-              title="南京厚知软件有限公司"
-            >南京厚知软件有限公司</a> 提供。
+              href="https://github.com/Feellove/vue-blog-front.git"
+              title="Feellove有限公司"
+            >Feellove有限公司</a> 提供。
           </span>
           <span
             id="busuanzi_container_site_pv"
