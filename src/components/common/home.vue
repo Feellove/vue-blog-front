@@ -65,7 +65,9 @@
     <el-footer>
       <div class="page__container footer__container">
         <p class="footer__copyright">
-          <span style="color:#69747a">Feelman</span>
+          <span
+            style="color:#69747a"
+          >©Rieko © 2018 ,2019w All Rights Reserved.2019网 - 轻阅读 , 看见好时光 苏ICP备17044739号-2</span>
           <br>
           <span style="color:#69747a">
             本站服务器由
