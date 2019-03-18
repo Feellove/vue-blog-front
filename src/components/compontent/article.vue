@@ -1,53 +1,24 @@
 <template>
   <div>
-    <el-carousel
-      :interval="4000"
-      type="card"
-      height="260px"
-    >
-      <el-carousel-item
-        v-for="item in 6"
-        :key="item"
-      >
-        <img
-          src="../../../static/img/blog-bg.jpg"
-          alt=""
-        >
-        <h3>{{item}}</h3>
+    <el-carousel :interval="4000" type="card" height="260px">
+      <el-carousel-item v-for="(item,index) in carouselList" :key="index">
+        <img :src="item.articleImgurl" @error="imgError(item)" >
       </el-carousel-item>
     </el-carousel>
     <div class="content_box">
-      <el-card
-        class="box-card"
-        style="flex:1;margin-right: 20px;"
-      >
+      <el-card class="box-card" style="flex:1;margin-right: 20px;">
         <h3 class="article_classes">前端</h3>
         <ul class="article_box">
-          <li
-            @click="toDetail(article._id)"
-            v-for="(article,index) in articleLists"
-            :key="index"
-          >
+          <li @click="toDetail(article._id)" v-for="(article,index) in articleLists" :key="index">
             <div class="mini-article__cover">
-              <img
-                itemprop="image"
-                :src="article.articleImgurl"
-                alt="姑娘去远方"
-              >
-              <div
-                itemprop="datePublished"
-                content
-                class="mini-article__date"
-              >
+              <img itemprop="image" :src="article.articleImgurl" alt="姑娘去远方" @error="imgError(article)">
+              <div itemprop="datePublished" content class="mini-article__date">
                 <span class="date__day">{{article.createTime}}</span>
                 <!-- <span class="date__month">二月</span> -->
               </div>
             </div>
             <div class="mini-article__info">
-              <h3
-                itemprop="name"
-                class="mini-article__title"
-              >
+              <h3 itemprop="name" class="mini-article__title">
                 <a
                   target="_blank"
                   itemprop="url"
@@ -55,16 +26,8 @@
                   title="姑娘去远方"
                 >{{article.articleName}}</a>
               </h3>
-              <a
-                target="_blank"
-                itemprop="url"
-                href="/story/goFarAway.html"
-                title="姑娘去远方"
-              >
-                <p
-                  itemprop="articleSection"
-                  class="min-article__desc"
-                >{{article.articleDesc}}</p>
+              <a target="_blank" itemprop="url" href="/story/goFarAway.html" title="姑娘去远方">
+                <p itemprop="articleSection" class="min-article__desc">{{article.articleDesc}}</p>
                 <p class="w-Read">
                   <span>阅读全文&gt;</span>
                 </p>
@@ -73,16 +36,10 @@
                 <i class="el-icon-bell"></i>
                 <ul class="tags__list clearfix">
                   <li class="tags__item">
-                    <a
-                      target="_blank"
-                      href="/tags/distance/"
-                    >远方</a>
+                    <a target="_blank" href="/tags/distance/">远方</a>
                   </li>
                   <li class="tags__item">
-                    <a
-                      target="_blank"
-                      href="/tags/life/"
-                    >生活</a>
+                    <a target="_blank" href="/tags/life/">生活</a>
                   </li>
                 </ul>
               </div>
@@ -95,11 +52,7 @@
           <h3 class="block__title">最新文章</h3>
           <ul class="block-list latest-post-list">
             <li class="latest-post-item">
-              <a
-                target="_blank"
-                href="/technology/typeScript.html"
-                title="TypeScript类型"
-              >
+              <a target="_blank" href="/technology/typeScript.html" title="TypeScript类型">
                 <div class="item__cover">
                   <img
                     src="https://note.youdao.com/yws/api/personal/file/WEB73c4e2c8d530fbc23f28558f99b4c075?method=download&amp;shareKey=7cb1c30b5f968b148541a9193f89211f"
@@ -113,11 +66,7 @@
               </a>
             </li>
             <li class="latest-post-item">
-              <a
-                target="_blank"
-                href="/story/warm.html"
-                title="愿所有人的未来都温暖"
-              >
+              <a target="_blank" href="/story/warm.html" title="愿所有人的未来都温暖">
                 <div class="item__cover">
                   <img
                     src="http://img.2019w.cn/trey-trimble-by-trey-trimble-synth-retrowave-synthwave-new-r.jpg"
@@ -131,16 +80,9 @@
               </a>
             </li>
             <li class="latest-post-item">
-              <a
-                target="_blank"
-                href="/story/goFarAway.html"
-                title="姑娘去远方"
-              >
+              <a target="_blank" href="/story/goFarAway.html" title="姑娘去远方">
                 <div class="item__cover">
-                  <img
-                    src="http://img.2019w.cn/away1.jpg"
-                    alt="姑娘去远方"
-                  >
+                  <img src="http://img.2019w.cn/away1.jpg" alt="姑娘去远方">
                 </div>
                 <div class="item__info">
                   <h3 class="item__title">姑娘去远方</h3>
@@ -149,16 +91,9 @@
               </a>
             </li>
             <li class="latest-post-item">
-              <a
-                target="_blank"
-                href="/story/goFarAway.html"
-                title="姑娘去远方"
-              >
+              <a target="_blank" href="/story/goFarAway.html" title="姑娘去远方">
                 <div class="item__cover">
-                  <img
-                    src="http://img.2019w.cn/away1.jpg"
-                    alt="姑娘去远方"
-                  >
+                  <img src="http://img.2019w.cn/away1.jpg" alt="姑娘去远方">
                 </div>
                 <div class="item__info">
                   <h3 class="item__title">姑娘去远方</h3>
@@ -182,6 +117,7 @@ export default {
   data() {
     return {
       articleLists: [],
+      carouselList: [],
       total: 0
     };
   },
@@ -189,6 +125,10 @@ export default {
     this.getArticleList();
   },
   methods: {
+    imgError(item) {
+      console.log(item);
+      item.articleImgurl = require("../../../static/img/a_1.jpg");
+    },
     toDetail(id) {
       this.$router.push({ name: "articledetail", params: { id: id } });
     },
@@ -206,7 +146,8 @@ export default {
                 "YYYY MM.DD"
               );
             });
-            console.log(this.articleLists);
+            console.log(this.articleLists.slice(0, 4));
+            this.carouselList = this.articleLists.slice(0, 5);
             this.total = response.data.message.total;
           } else {
             console.log("获取数据失败");
@@ -283,19 +224,19 @@ export default {
 .latest-post-item + .latest-post-item {
   margin-top: 10px;
 }
-.article_classes{
-    font-size: 16px;
-    display: inline-block;
-    padding: 0 20px;
-    font-weight: normal;
-    color: #fff;
-    margin: 0;
-    cursor: pointer;
-    height: 30px;
-    line-height: 30px;
-    background: #409eff;
-    border-radius: 20px;
-    box-shadow: 0 0 10px #409eff;
+.article_classes {
+  font-size: 16px;
+  display: inline-block;
+  padding: 0 20px;
+  font-weight: normal;
+  color: #fff;
+  margin: 0;
+  cursor: pointer;
+  height: 30px;
+  line-height: 30px;
+  background: #409eff;
+  border-radius: 20px;
+  box-shadow: 0 0 10px #409eff;
 }
 .article_box {
   display: flex;
@@ -372,7 +313,7 @@ export default {
   text-align: center;
   background-color: rgba(64, 84, 90, 0.7);
   line-height: 1;
-  font-size: 14px
+  font-size: 14px;
 }
 .mini-article__info {
   padding: 15px;
