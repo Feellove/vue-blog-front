@@ -4,6 +4,8 @@
       :interval="4000"
       type="card"
       height="260px"
+      v-show="carouselShow"
+      class="carousel_box"
     >
       <el-carousel-item
         v-for="(item,index) in carouselList"
@@ -19,8 +21,7 @@
     <div class="content_box">
       <div style="flex:1;">
         <el-card
-          class="box-card"
-          style="margin-right: 20px;margin-bottom:20px;padding: 20px 0 20px 20px;"
+          class="box-card left_card"
           v-for="(c,index) in classes"
           :key="index"
         >
@@ -30,7 +31,7 @@
               @click="toDetail(article._id)"
               v-for="(article,index) in articleLists"
               :key="index"
-              v-if="article.articleClasses === c.classesName"
+              v-if="article.classesId.classesName === c.classesName"
             >
               <div class="mini-article__cover">
                 <img
@@ -67,17 +68,8 @@
                 <div class="min-article__tags">
                   <i class="el-icon-bell"></i>
                   <ul class="tags__list clearfix">
-                    <li class="tags__item">
-                      <a
-                        target="_blank"
-                        href="/tags/distance/"
-                      >远方</a>
-                    </li>
-                    <li class="tags__item">
-                      <a
-                        target="_blank"
-                        href="/tags/life/"
-                      >生活</a>
+                    <li class="tags__item" v-for="(tag,index) in article.tags" :key="index">
+                      <a href="/">{{tag}}</a>
                     </li>
                   </ul>
                 </div>
@@ -87,7 +79,7 @@
         </el-card>
       </div>
       <div class="right_box">
-        <el-card class="box-card left_card">
+        <el-card class="box-card right_card">
           <h3 class="block__title">最新文章</h3>
           <ul class="block-list latest-post-list">
             <li
@@ -110,7 +102,7 @@
             </li>
           </ul>
         </el-card>
-        <el-card class="box-card left_card">
+        <el-card class="box-card right_card">
           <h3 class="block__title">微信打赏</h3>
           <img
             src="../../../static/img/code.jpg"
@@ -133,7 +125,10 @@ export default {
     return {
       articleLists: [],
       carouselList: [],
+      searchLists: "",
       classes: [],
+      carouselShow: true,
+      articleList: false,
       total: 0
     };
   },
@@ -143,10 +138,10 @@ export default {
   },
   methods: {
     imgError(item) {
-      console.log(item);
       item.articleImgurl = require("../../../static/img/a_1.jpg");
     },
     toDetail(id) {
+      console.log(id);
       this.$router.push({ name: "articledetail", params: { id: id } });
     },
     getArticleList() {
@@ -158,12 +153,12 @@ export default {
         .then(response => {
           if (response.data.code == 200 && response.data.message) {
             this.articleLists = response.data.message.data;
+            console.log(this.articleLists);
             this.articleLists.forEach((v, k) => {
               this.articleLists[k].createTime = moment(v.createTime).format(
                 "YYYY-MM-DD"
               );
             });
-            console.log(this.articleLists.slice(0, 4));
             this.carouselList = this.articleLists.slice(0, 5);
             this.total = response.data.message.total;
           } else {
@@ -182,8 +177,8 @@ export default {
       })
         .then(response => {
           if (response.data.code === 200 && response.data.message) {
-            console.log(this.classes);
             this.classes = response.data.message;
+            console.log(this.classes);
           }
         })
         .catch(error => {
@@ -201,9 +196,14 @@ export default {
 .content_box a {
   cursor: pointer;
 }
-.left_card {
+.right_card {
   margin-bottom: 20px;
   padding: 20px;
+}
+.left_card {
+  margin-right: 20px;
+  margin-bottom: 20px;
+  padding: 20px 0 20px 20px;
 }
 .wx_code {
   width: 100%;
@@ -253,7 +253,7 @@ export default {
 }
 .latest-post-item .item__info {
   display: block;
-  width: calc(100% - 80px);
+  width: calc(100% - 110px);
   padding: 8px 15px;
   line-height: 1.4;
 }
@@ -303,6 +303,10 @@ export default {
   line-height: 1.4;
   border-radius: 8px;
   margin: 16px 9px 12px 0;
+  cursor: pointer;
+}
+.carousel_box {
+  display: block;
 }
 .right_box {
   width: 280px;
@@ -321,13 +325,20 @@ export default {
   .right_box {
     width: 100%;
   }
+  .carousel_box {
+    display: none;
+  }
   .el-card.is-always-shadow,
   .el-card.is-hover-shadow:focus,
   .el-card.is-hover-shadow:hover {
     box-shadow: none;
     background-color: transparent;
-    padding: 0 !important;
+    padding: 0;
     margin-right: 0 !important;
+  }
+  .right_card {
+    padding: 20px !important;
+    background-color: #fff !important;
   }
 }
 

@@ -3,7 +3,7 @@
     <el-header>
       <el-row
         type="flex"
-        class="row-bg"
+        class="row-bg pc_header"
         justify="center"
       >
         <el-col
@@ -12,7 +12,6 @@
           :md="7"
           :lg="7"
           :xl="7"
-          justify="center"
         >
           <a
             class="page__logo"
@@ -34,7 +33,7 @@
           :xl="10"
         >
           <el-menu
-            default-active="/article"
+            :default-active="active"
             background-color="#333"
             text-color="#75797c"
             active-text-color="#fff"
@@ -63,9 +62,69 @@
             <el-input
               placeholder="请输入内容"
               prefix-icon="el-icon-search"
-              v-model="searchcContent"
+              v-model="searchKeyword"
+              @keyup.enter.native="search"
             ></el-input>
           </div>
+        </el-col>
+      </el-row>
+      <el-row
+        type="flex"
+        class="row-bg wap_header"
+        justify="center"
+      >
+        <el-col
+          :xs="18"
+          :sm="18"
+          :md="18"
+          :lg="18"
+          :xl="18"
+        >
+          <div>
+            <el-input
+              placeholder="请输入内容"
+              prefix-icon="el-icon-search"
+              v-model="searchKeyword"
+              @keyup.enter.native="search"
+            ></el-input>
+          </div>
+        </el-col>
+        <el-col
+          :xs="6"
+          :sm="6"
+          :md="6"
+          :lg="6"
+          :xl="6"
+          style="text-align:center"
+        >
+          <div class="h_menu"><span @click="toggleStatus"><i class="el-icon-menu"></i></span></div>
+          <el-menu
+            default-active="/article"
+            background-color="#333"
+            text-color="#75797c"
+            active-text-color="#fff"
+            router
+            v-show="status"
+          >
+            <el-menu-item index="/article">
+              <span
+                slot="title"
+                @click="toggleStatus"
+              >首页</span>
+            </el-menu-item>
+            <el-menu-item index="/auther">
+              <span
+                slot="title"
+                @click="toggleStatus"
+              >关于博主</span>
+            </el-menu-item>
+            <el-menu-item index="/message">
+              <span
+                slot="title"
+                @click="toggleStatus"
+              >留言</span>
+            </el-menu-item>
+          </el-menu>
         </el-col>
       </el-row>
     </el-header>
@@ -83,7 +142,9 @@
       </ul>
     </div>
     <el-main>
-      <router-view></router-view>
+      <!-- <keep-alive> -->
+        <router-view></router-view>
+      <!-- </keep-alive> -->
     </el-main>
     <el-footer>
       <div class="page__container footer__container">
@@ -161,15 +222,19 @@
 import url from "@/api.config.js";
 import music from "@/components/common/music.vue";
 export default {
-  components: { music: music },
+  components: { music },
   data() {
     return {
-      searchcContent: "",
-      classes: []
+      searchKeyword: "",
+      classes: [],
+      searchLists: [],
+      active: "",
+      status: false,
     };
   },
   created() {
     this.getClasses();
+    this.getActive();
   },
   methods: {
     getClasses() {
@@ -186,6 +251,29 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    toggleStatus() {
+      if (this.status) {
+        this.status = false;
+      } else {
+        this.status = true;
+      }
+    },
+    getActive() {
+      let matched = this.$route.matched.filter(item => item.name);
+      this.active = matched[0].path;
+    },
+    search() {
+      this.$router.push({
+        name: "searchContent",
+        params: { keyword: this.searchKeyword }
+      });
+
+    }
+  },
+  watch: {
+    $route() {
+      this.getActive();
     }
   }
 };
@@ -199,20 +287,31 @@ export default {
   font-size: 20px;
   font-weight: 600;
   height: 60px;
-  padding: 0 40px;
+  padding: 0 10px;
   -webkit-box-shadow: 0px 1px 15px 1px rgba(69, 65, 78, 0.1);
   box-shadow: 0px 1px 15px 1px rgba(69, 65, 78, 0.1);
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
-  z-index: 99;
+  z-index: 1000;
 }
-.el-card__body{
+.el-card__body {
   padding: 0;
 }
 .el-carousel__container {
   margin: 10px 0;
+}
+.h_menu {
+  height: 60px;
+}
+.h_menu > span {
+  cursor: pointer;
+}
+.h_menu > span > i {
+  font-size: 28px;
+  color: #fff;
+  vertical-align: middle;
 }
 .el-carousel__item {
   border-radius: 12px;
@@ -268,14 +367,37 @@ export default {
 }
 .el-menu {
   border: none !important;
+  width: 100% !important;
 }
 .el-main {
   padding: 140px 20px 20px;
   margin: 0 auto;
+  width: 100%;
+}
+.el-footer {
+  height: auto !important;
+}
+.pc_header {
+  display: none;
+}
+.wap_header {
+  display: block;
+}
+.el-input--prefix .el-input__inner {
+  border-radius: 22px;
 }
 @media screen and (min-width: 980px) {
   .el-main {
     width: 970px;
+  }
+  .el-header {
+    padding: 0 40px;
+  }
+  .pc_header {
+    display: block;
+  }
+  .wap_header {
+    display: none;
   }
 }
 @media screen and (min-width: 1280px) {
@@ -283,17 +405,10 @@ export default {
     width: 1280px;
   }
 }
-/* @media screen and (min-width: 736px) {
-  .el-main {
-  }
-} */
 .page__logo > img {
   height: 50px;
 }
-.el-input--prefix .el-input__inner {
-  border-radius: 22px;
-  width: 250px;
-}
+
 .el-input__icon {
   font-size: 20px;
 }
