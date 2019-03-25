@@ -5,6 +5,7 @@ import article from '@/components/compontent/article'
 import articledetail from '@/components/compontent/articledetail'
 import searchContent from '@/components/compontent/searchContent'
 import info from '@/components/compontent/info'
+import message from '@/components/compontent/message'
 
 Vue.use(Router)
 export default new Router({
@@ -31,7 +32,7 @@ export default new Router({
     }, {
       path: '/message',
       name: 'message',
-      component: info,
+      component: message,
     }]
   }]
 })

@@ -68,7 +68,11 @@
                 <div class="min-article__tags">
                   <i class="el-icon-bell"></i>
                   <ul class="tags__list clearfix">
-                    <li class="tags__item" v-for="(tag,index) in article.tags" :key="index">
+                    <li
+                      class="tags__item"
+                      v-for="(tag,index) in article.tags"
+                      :key="index"
+                    >
                       <a href="/">{{tag}}</a>
                     </li>
                   </ul>
@@ -148,7 +152,7 @@ export default {
       this.$axios({
         url: url.getArticleList,
         method: "post",
-        data: { currentPage: this.currentPage, pageSize: this.pageSize }
+        data: {}
       })
         .then(response => {
           if (response.data.code == 200 && response.data.message) {
@@ -177,8 +181,7 @@ export default {
       })
         .then(response => {
           if (response.data.code === 200 && response.data.message) {
-            this.classes = response.data.message;
-            console.log(this.classes);
+            this.classes = response.data.message
           }
         })
         .catch(error => {
