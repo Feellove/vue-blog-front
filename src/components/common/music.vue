@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown trigger="click" class="music_box" @command="playList">
+  <el-dropdown trigger="click" class="music_box" @command="playList" v-draggable>
     <span class="el-dropdown-link music_list_box"></span>
     <div class="play_tools">
       <span class="play_tools_list prev" @click="prev"></span>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { Draggable } from 'draggable-vue-directive'
 export default {
   data() {
     return {
@@ -74,7 +75,10 @@ export default {
     },
     prev() {},
     next() {}
-  }
+  },
+   directives: {
+            Draggable,
+        },
 };
 </script>
 
@@ -88,6 +92,7 @@ export default {
   background: #fff;
   z-index: 999;
   border-radius: 50%;
+  cursor: move;
 }
 .play_bg {
   width: 100%;

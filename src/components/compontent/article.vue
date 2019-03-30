@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading.fullscreen.lock="loading">
     <el-carousel
       :interval="4000"
       type="card"
@@ -8,7 +8,7 @@
       class="carousel_box"
     >
       <el-carousel-item
-        v-for="(item,index) in carouselList"
+        v-for="(item,index) in articleLists"
         :key="index"
       >
         <img
@@ -31,13 +31,12 @@
               @click="toDetail(article._id)"
               v-for="(article,index) in articleLists"
               :key="index"
-              v-if="article.classesId.classesName === c.classesName"
+              v-if="article.classesId._id === c._id"
             >
               <div class="mini-article__cover">
                 <img
                   itemprop="image"
                   :src="article.articleImgurl"
-                  :alt="article.articleName"
                   @error="imgError(article)"
                 >
                 <div
@@ -45,7 +44,7 @@
                   content
                   class="mini-article__date"
                 >
-                  <span class="date__day">{{article.createTime}}</span>
+                  <span class="date__day">{{article.createTime | dateformat('YYYY-MM-DD')}}</span>
                   <!-- <span class="date__month">二月</span> -->
                 </div>
               </div>
@@ -73,7 +72,7 @@
                       v-for="(tag,index) in article.tags"
                       :key="index"
                     >
-                      <a href="/">{{tag}}</a>
+                      <a href="javascript:;">{{tag}}</a>
                     </li>
                   </ul>
                 </div>
@@ -100,7 +99,7 @@
                 </div>
                 <div class="item__info">
                   <h3 class="item__title">{{item.articleName}}</h3>
-                  <span class="item__text">{{item.createTime}}</span>
+                  <span class="item__text">{{item.createTime | dateformat('YYYY-MM-DD')}}</span>
                 </div>
               </a>
             </li>
@@ -120,10 +119,7 @@
 </template>
 
 <script>
-import url from "@/api.config.js";
-import moment from "moment";
-import "moment/locale/zh-cn";
-moment.locale("zh-cn");
+import url from "@/api/api.config.js";
 export default {
   data() {
     return {
@@ -133,17 +129,16 @@ export default {
       classes: [],
       carouselShow: true,
       articleList: false,
-      total: 0
+      total: 0,
+      loading: true
     };
   },
+  beforeCreate() {},
   created() {
     this.getArticleList();
     this.getClasses();
   },
   methods: {
-    imgError(item) {
-      item.articleImgurl = require("../../../static/img/a_1.jpg");
-    },
     toDetail(id) {
       console.log(id);
       this.$router.push({ name: "articledetail", params: { id: id } });
@@ -157,12 +152,13 @@ export default {
         .then(response => {
           if (response.data.code == 200 && response.data.message) {
             this.articleLists = response.data.message.data;
+            this.loading = false;
             console.log(this.articleLists);
-            this.articleLists.forEach((v, k) => {
-              this.articleLists[k].createTime = moment(v.createTime).format(
-                "YYYY-MM-DD"
-              );
-            });
+            // this.articleLists.forEach((v, k) => {
+            //   this.articleLists[k].createTime = moment(v.createTime).format(
+            //     "YYYY-MM-DD"
+            //   );
+            // });
             this.carouselList = this.articleLists.slice(0, 5);
             this.total = response.data.message.total;
           } else {
@@ -181,7 +177,7 @@ export default {
       })
         .then(response => {
           if (response.data.code === 200 && response.data.message) {
-            this.classes = response.data.message
+            this.classes = response.data.message;
           }
         })
         .catch(error => {
@@ -199,15 +195,7 @@ export default {
 .content_box a {
   cursor: pointer;
 }
-.right_card {
-  margin-bottom: 20px;
-  padding: 20px;
-}
-.left_card {
-  margin-right: 20px;
-  margin-bottom: 20px;
-  padding: 20px 0 20px 20px;
-}
+
 .wx_code {
   width: 100%;
 }
@@ -292,208 +280,5 @@ export default {
   background: #409eff;
   border-radius: 20px;
   box-shadow: 0 0 10px #409eff;
-}
-.article_box {
-  display: flex;
-  display: -webkit-flex;
-  flex-wrap: wrap;
-}
-.article_box > li {
-  width: 290px;
-  background-color: #fff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.3s;
-  line-height: 1.4;
-  border-radius: 8px;
-  margin: 16px 9px 12px 0;
-  cursor: pointer;
-}
-.carousel_box {
-  display: block;
-}
-.right_box {
-  width: 280px;
-}
-.article_box > li:hover {
-  box-shadow: 0 0 26px rgba(0, 0, 0, 0.6);
-}
-@media screen and (max-width: 980px) {
-  .article_box > li {
-    width: 100%;
-    margin-right: 0 !important;
-  }
-  .article_box > li:hover {
-    box-shadow: none;
-  }
-  .right_box {
-    width: 100%;
-  }
-  .carousel_box {
-    display: none;
-  }
-  .el-card.is-always-shadow,
-  .el-card.is-hover-shadow:focus,
-  .el-card.is-hover-shadow:hover {
-    box-shadow: none;
-    background-color: transparent;
-    padding: 0;
-    margin-right: 0 !important;
-  }
-  .right_card {
-    padding: 20px !important;
-    background-color: #fff !important;
-  }
-}
-
-.el-carousel__item img {
-  width: 100%;
-  object-fit: cover;
-  height: 100%;
-}
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 18px;
-  opacity: 0.75;
-  margin: 0;
-}
-
-.mini-article__cover {
-  position: relative;
-  overflow: hidden;
-  padding: 10px 10px 0 10px;
-  border-radius: 8px;
-  height: 160px;
-}
-.mini-article__cover:hover img {
-  transform: scale(1.2);
-  -o-transform: scale(1.2);
-  -webkit-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  -ms-transform: scale(1.2);
-}
-.mini-article__cover > img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-  transition: transform 0.4s linear;
-  -webkit-transition: transform 0.4s linear;
-  -o-transition: transform 0.4s linear;
-  -moz-transition: transform 0.4s linear;
-  -ms-transition: transform 0.4s linear;
-}
-.mini-article__date {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  color: #fff;
-  font-weight: 700;
-  text-align: center;
-  background-color: rgba(64, 84, 90, 0.7);
-  line-height: 1;
-  font-size: 14px;
-}
-.mini-article__info {
-  padding: 15px;
-}
-.min-article__desc {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  word-break: break-all;
-  line-height: 24px;
-  height: 52px;
-  color: #999;
-  font-size: 12px;
-  margin: 10px 0;
-}
-.mini-article__title {
-  font-size: 16px;
-  margin: 0;
-  font-weight: 400;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.mini-article__title > a {
-  font-size: inherit;
-  text-decoration: none;
-  transition: color 0.3s;
-  color: #333;
-  font-weight: 600;
-}
-.w-Read {
-  font-size: 12px;
-  color: #409eff;
-  margin: 12px 0;
-}
-.w-Read:hover {
-  opacity: 0.8;
-}
-.page__mini-article {
-  width: 100%;
-  background-color: #fff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.3s;
-  line-height: 1.4;
-  border-radius: 8px;
-}
-
-.page__mini-article:hover {
-  box-shadow: 0 0 26px rgba(0, 0, 0, 0.6);
-}
-
-.page__mini-article:hover .mini-article__cover > a {
-  transform: translate(-50%, -50%) rotateX(180deg) rotateZ(-360deg) scale(1);
-  opacity: 1;
-}
-.sidebar__block {
-  position: relative;
-  display: block;
-  width: 100%;
-}
-.min-article__tags > i {
-  font-size: 20px;
-  vertical-align: middle;
-  margin-right: 5px;
-  color: #409eff;
-}
-.min-article__tags .tags__list {
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  vertical-align: middle;
-}
-.min-article__tags .tags__item {
-  float: left;
-}
-.min-article__tags .tags__item + .tags__item::before {
-  content: ", ";
-}
-.min-article__tags .tags__item > a {
-  font-size: 14px;
-  text-decoration: none;
-  transition: color 0.3s;
-  color: #666;
-}
-.min-article__tags .tags__item > a:hover {
-  color: #409eff;
-}
-.latest-post-item .item__title:hover {
-  color: #409eff;
 }
 </style>

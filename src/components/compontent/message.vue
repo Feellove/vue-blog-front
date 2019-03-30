@@ -4,48 +4,142 @@
     <div>
       <el-input
         type="textarea"
-        v-model="comment_text"
+        v-model="commentContent"
         resize="none"
         :autosize="{ minRows:5}"
       ></el-input>
       <el-button
         type="primary"
         class="comment_btn"
-      >提交评论</el-button>
+        @click="addComment"
+      >提交留言</el-button>
     </div>
-    <div class="article_comment_title"><span>最新评论</span></div>
-    <div class="article_comment_list">
-      <div class="article_comment_li">
-        <div class="article_comment_user"><span class="user"><img src="http://koss-cs.j-cc.cn/swift/v1/iyong_public/iyong_2620342958146048/file/20190325/1553476134271020371.jpg"></span>2Xfvm3zzgB8<span class="date">2019-03-25 09:00:58</span>
+    <div class="article_comment_title"><span>最新留言</span></div>
+    <div
+      class="article_comment_list"
+    >
+      <div
+        class="article_comment_li"
+        v-for="(comment,index) in commentLists"
+        :key="index"
+      >
+        <div class="article_comment_user">
+          <span class="user">
+            <img src="http://koss-cs.j-cc.cn/swift/v1/iyong_public/iyong_2620342958146048/file/20190325/1553476134271020371.jpg"></span>
+          <span class="user_name">游客{{comment._id}}</span><span class="date">{{comment.commentTime | dateformat('YYYY-MM-DD HH:mm:ss')}}</span>
         </div>
-        <div>不好意思，你不是我想要的</div>
-        <div class="article_comment_reply">
-          <p class="article_comment_replyAdmin">管理员回复：</p>我知道了
+        <div>{{comment.commentContent}}</div>
+        <div
+          class="article_comment_reply"
+          v-if="comment.commentreply!=''"
+        >
+          <p class="article_comment_replyAdmin">博主回复：</p>{{comment.commentreply}}
         </div>
       </div>
-      <div class="article_comment_li">
-        <div class="article_comment_user"><span class="user"><img src="http://koss-cs.j-cc.cn/swift/v1/iyong_public/iyong_2620342958146048/file/20190325/1553476134271020371.jpg"></span>2Xfvm3zzgB8<span class="date">2019-03-25 09:00:58</span>
-        </div>
-        <div>没有想要的东西吗？</div>
-      </div>
     </div>
+    <div v-show="commentLists.length===0">暂时无评论</div>
   </div>
 </template>
 
 <script>
+import url from "@/api/api.config.js";
 export default {
   data() {
     return {
-      comment_text: ""
+      commentContent: "",
+      commentLists: []
     };
-  }
+  },
+  created() {
+    this.getCommentLists();
+  },
+  methods: {
+    addComment() {
+      if(this.commentContent!==''){
+      this.$axios({
+        url: url.addMessage,
+        method: "post",
+        data: {
+          commentContent: this.commentContent,
+          commentreply: ""
+        }
+      })
+        .then(response => {
+          if (response.data.code === 200 && response.data.message) {
+            this.getCommentLists();
+          } else {
+            this.$message({
+              showClose: true,
+              message: "评论失败",
+              type: "error"
+            });
+          }
+        })
+        .catch(error => {
+          this.$message({
+            showClose: true,
+            message: error,
+            type: "error"
+          });
+        });
+      }else{
+        this.$message({
+            showClose: true,
+            message: '评论内容不能为空',
+            type: "error"
+          });
+      }
+    },
+    getCommentLists() {
+      this.$axios({
+        url: url.getMessage,
+        method: "post",
+        data: {}
+      })
+        .then(response => {
+          if (response.data.code === 200 && response.data.message) {
+            this.commentLists = response.data.message;
+          } else {
+            this.$message({
+              showClose: true,
+              message: "加载失败",
+              type: "error"
+            });
+          }
+        })
+        .catch(error => {
+          this.$message({
+            showClose: true,
+            message: error,
+            type: "error"
+          });
+        });
+    }
+  },
+  // computed: {
+  //   commentTime() {
+  //     console.log(this.commentLists);
+  //     return (this.commentLists.commentTime = moment(
+  //       this.commentLists.commentTime
+  //     ).format("YYYY-MM-DD HH:mm:ss"));
+  //   }
+  // }
 };
 </script>
 
 <style scoped>
 .message_box {
   background: #fff;
-  padding: 40px;
+  padding: 20px;
+}
+@media screen and (max-width: 768px) {
+  .user_name{
+   display: inline-block;
+    width: 90px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
 }
 .message_title {
   font-size: 16px;

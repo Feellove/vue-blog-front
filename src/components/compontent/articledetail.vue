@@ -1,19 +1,26 @@
 <template>
   <div class="a_box quill-editor editor">
     <div class="post__info">
+      <img
+        :src="articleDetails.articleImgurl"
+        class="top_img"
+        @error="imgError(articleDetails)"
+      >
       <h1 class="post__title">{{articleDetails.articleName}}</h1>
       <div class="post__mark">
         <div class="mark__block">
           <i class="mark__icon el-icon-time"></i>
           <ul class="mark__list clearfix">
-            <li class="mark__item"><span>{{formateTime}}</span></li>
+            <li class="mark__item"><span>{{articleDetails.createTime | dateformat('YYYY-MM-DD')}}</span></li>
           </ul>
           <i class="mark__icon el-icon-bell"></i>
           <ul class="mark__list clearfix">
-            <li class="mark__item" v-for="tag in articleDetails.tags" :key="tag">
-              <a
-                href="/"
-              >{{tag}}</a>
+            <li
+              class="mark__item"
+              v-for="tag in articleDetails.tags"
+              :key="tag"
+            >
+              <a href="/">{{tag}}</a>
             </li>
 
           </ul>
@@ -23,7 +30,7 @@
               id="busuanzi_container_page_pv"
               class="mark__item"
               style="display: inline;"
-            ><span id="busuanzi_value_page_pv">60</span>次</li>
+            ><span id="busuanzi_value_page_pv">{{articleDetails.clickTimes}}</span>次</li>
           </ul>
         </div>
       </div>
@@ -38,15 +45,11 @@
 </template>
 
 <script>
-import url from "@/api.config.js";
+import url from "@/api/api.config.js";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
-import moment from "moment";
-import "moment/locale/zh-cn";
-moment.locale("zh-cn");
 import { quillEditor } from "vue-quill-editor";
-
 export default {
   components: {
     quillEditor
@@ -84,12 +87,9 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    },
+    }
   },
   computed: {
-    formateTime: function() {
-      return moment(this.articleDetails.createTime).format("YYYY-MM-DD");
-    }
   }
 };
 </script>
@@ -100,17 +100,26 @@ export default {
   background-color: #fff;
   border-radius: 4px;
   height: calc(100% - 40px);
-  padding: 0 20px 20px;
 }
 .post__info {
-  padding: 30px 15px 0px;
+  padding: 30px 15px 12px;
+}
+.top_img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+@media screen and (max-width: 980px) {
+  .top_img {
+    height: 100px;
+  }
 }
 .post__title {
   font-size: 28px;
   color: #242f35;
   font-weight: 400;
   line-height: 1;
-  margin: 10px 0;
+  margin: 20px 0;
   text-align: center;
 }
 .post__mark {
@@ -138,8 +147,8 @@ export default {
   vertical-align: middle;
 }
 .mark__block .mark__item:not(:last-child)::after {
-    display: inline-block;
-    content: ',';
+  display: inline-block;
+  content: ",";
 }
 .mark__block .mark__list {
   list-style: none;
@@ -174,5 +183,4 @@ export default {
 .ql-container.ql-snow {
   border: none;
 }
-
 </style>

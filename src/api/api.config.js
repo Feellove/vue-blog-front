@@ -6,5 +6,7 @@ const URL = {
   getByClassesIdArticle: LOCALURL + 'article/getByClassesIdArticle',
   searchArticle: LOCALURL + 'article/searchArticle',
   getClasses: LOCALURL + 'classes/getClasses',
+  getMessage: LOCALURL + 'message/getMessage',
+  addMessage: LOCALURL + 'message/addMessage',
 }
 module.exports = URL

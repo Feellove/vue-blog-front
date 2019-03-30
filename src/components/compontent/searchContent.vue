@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>找到匹配<span>{{keyword}}</span>的结果共<span>2</span>条</h3>
+    <h4>找到匹配<span class="keyword_text">{{keyword}}</span>的结果共<span class="keyword_text">{{searchLength}}</span>条</h4>
     <ul class="article_box">
       <li
         @click="toDetail(article._id)"
@@ -41,11 +41,12 @@
           <div class="min-article__tags">
             <i class="el-icon-bell"></i>
             <ul class="tags__list clearfix">
-              <li class="tags__item">
-                <a href="/tags/distance/">远方</a>
-              </li>
-              <li class="tags__item">
-                <a href="/tags/life/">生活</a>
+              <li
+                class="tags__item"
+                v-for="(tag,index) in article.tags"
+                :key="index"
+              >
+                <a href="javascript:;">{{tag}}</a>
               </li>
             </ul>
           </div>
@@ -56,12 +57,13 @@
 </template>
 
 <script>
-import url from "@/api.config.js";
+import url from "@/api/api.config.js";
 export default {
   data() {
     return {
       keyword: "",
-      searchLists: []
+      searchLists: [],
+      searchLength: 0
     };
   },
   created() {
@@ -84,6 +86,7 @@ export default {
           if (response.data.code == 200 && response.data.message) {
             console.log(response.data.message);
             this.searchLists = response.data.message;
+            this.searchLength = this.searchLists.length;
           } else {
             console.log("获取数据失败");
           }
@@ -100,5 +103,8 @@ export default {
 </script>
 
 <style scoped>
+.keyword_text {
+  color: #409eff;
+}
 </style>
 
